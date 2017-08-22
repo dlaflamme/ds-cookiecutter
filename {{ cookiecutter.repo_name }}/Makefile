@@ -12,10 +12,16 @@ ifeq (,$(shell which conda))
 	$(error conda must be installed)
 endif
 
+# Define utility variable to help calling Python from the virtual environment
+ifeq ($(CONDA_DEFAULT_ENV),$(REPO_NAME))
+    ACTIVATE_ENV := true
+else
+    ACTIVATE_ENV := source activate $(REPO_NAME)
+endif
+
 # Execute python related functionalities from within the project's environment
 define execute_in_env
-	source activate $(REPO_NAME); \
-	$1
+	$(ACTIVATE_ENV) && $1
 endef
 
 #################################################################################
