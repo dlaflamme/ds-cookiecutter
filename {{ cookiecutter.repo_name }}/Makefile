@@ -1,4 +1,4 @@
-.PHONY: clean data lint sync_data_to_s3 sync_data_from_s3
+.PHONY: test cover data clean lint sync_data_to_s3 sync_data_from_s3 create_env
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -7,6 +7,8 @@
 BUCKET = {{ cookiecutter.s3_bucket }}
 PROFILE = {{ cookiecutter.aws_profile }}
 REPO_NAME = {{ cookiecutter.repo_name }}
+EXCLUDES_LINT = --exclude=bin/,src/rebuydsutils/,docs/conf.py
+EXCLUDES_PYTEST = --ignore src/rebuydsutils
 
 ifeq (,$(shell which conda))
 	$(error conda must be installed)
@@ -24,12 +26,19 @@ define execute_in_env
 	$(ACTIVATE_ENV) && $1
 endef
 
+
 #################################################################################
-# COMMANDS                                                                      #
+# PROJECT RULES                                                                 #
 #################################################################################
 
-test_env_run:
-	$(call execute_in_env, python --version)
+
+## Run pytest on the project
+test:
+	$(call execute_in_env, pytest $(EXCLUDES_PYTEST))
+
+## Run coverage test on the project
+cover:
+	$(call execute_in_env, pytest --cov=. tests/ $(EXCLUDES_PYTEST))
 
 ## Make Dataset
 data:
@@ -39,9 +48,9 @@ data:
 clean:
 	find . -name "*.pyc" -exec rm {} \;
 
-## Lint using flake8
+## Lint using flake8; Excluding $EXCLUDES_LINT
 lint:
-	$(call execute_in_env, flake8 --exclude=lib/,bin/,docs/conf.py .)
+	$(call execute_in_env, flake8  $(EXCLUDES_LINT) .)
 
 ## Upload Data to S3
 sync_data_to_s3:
@@ -63,11 +72,6 @@ endif
 create_env:
 	conda env create -n $(REPO_NAME) -f environment.yml
 	@echo ">>> New conda env created. Activate with:\nsource activate $(REPO_NAME)"
-
-#################################################################################
-# PROJECT RULES                                                                 #
-#################################################################################
-
 
 
 #################################################################################

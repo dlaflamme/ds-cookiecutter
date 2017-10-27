@@ -84,7 +84,7 @@ def test_folders(default_baked_project):
         ]
 
     abs_expected_dirs = [os.path.join(default_baked_project, d) for
-                            d in expected_dirs]
+                         d in expected_dirs]
 
     abs_dirs, _, _ = list(zip(*os.walk(default_baked_project)))
 
