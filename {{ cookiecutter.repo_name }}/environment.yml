@@ -17,6 +17,7 @@ dependencies:
   # - jupyter
   # - ipython
 # Include pip based packages
-  # - pip:
-  #   - sklearn-pandas
+  - pip:
+    - -e .
+    # - sklearn-pandas
   #   - imbalanced-learn
