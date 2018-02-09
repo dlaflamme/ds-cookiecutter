@@ -6,7 +6,7 @@
 
 BUCKET = {{ cookiecutter.s3_bucket }}
 PROFILE = {{ cookiecutter.aws_profile }}
-REPO_NAME = {{ cookiecutter.repo_name }}
+SHORT_PRJ_NAME = {{ cookiecutter.short_prj_name }}
 EXCLUDES_LINT = --exclude=bin/,src/rebuydsutils/,docs/conf.py
 EXCLUDES_PYTEST = --ignore src/rebuydsutils
 
@@ -15,10 +15,10 @@ ifeq (,$(shell which conda))
 endif
 
 # Define utility variable to help calling Python from the virtual environment
-ifeq ($(CONDA_DEFAULT_ENV),$(REPO_NAME))
+ifeq ($(CONDA_DEFAULT_ENV),$(SHORT_PRJ_NAME))
     ACTIVATE_ENV := true
 else
-    ACTIVATE_ENV := source activate $(REPO_NAME)
+    ACTIVATE_ENV := source activate $(SHORT_PRJ_NAME)
 endif
 
 # Execute python related functionalities from within the project's environment
@@ -70,8 +70,8 @@ endif
 
 ## Set up python interpreter environment
 create_env:
-	conda env create -n $(REPO_NAME) -f environment.yml
-	@echo ">>> New conda env created. Activate with:\nsource activate $(REPO_NAME)"
+	conda env create -n $(SHORT_PRJ_NAME) -f environment.yml
+	@echo ">>> New conda env created. Activate with:\nsource activate $(SHORT_PRJ_NAME)"
 
 
 #################################################################################

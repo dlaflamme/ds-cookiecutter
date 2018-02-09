@@ -1,6 +1,7 @@
 {
     "project_name": "project_name",
-    "repo_name": "{{ 'ds-' + cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "short_prj_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "repo_name": "{{ 'ds-' + cookiecutter.short_prj_name }}",
     "author_name": "Your name (or your organization/company/team)",
     "email": "datascience@rebuy.com",
     "description": "A short description of the project.",

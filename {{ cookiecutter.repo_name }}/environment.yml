@@ -1,4 +1,4 @@
-name: {{ cookiecutter.repo_name }}
+name: {{ cookiecutter.short_prj_name }}
 channels:
   - conda-forge
 dependencies:
